@@ -1,4 +1,4 @@
-package com.leanit.client;
+package com.leaniot.client;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -43,6 +43,8 @@ public class IotdeviceApplication implements CommandLineRunner {
 		myAction.setActionType(actionType);
 		wsession.subscribe(myAction);
 		
+		System.out.println("请输入命令：");
+		command();
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		while(true) {
@@ -68,6 +70,9 @@ public class IotdeviceApplication implements CommandLineRunner {
 					events.put("location", new Location(x, y));
 					wsession.getSession().reportEvents(events);
 				}
+				else {
+					command();
+				}
 			}
 			catch(Throwable e) {
 				e.printStackTrace(new java.io.PrintStream(System.out));
@@ -75,4 +80,10 @@ public class IotdeviceApplication implements CommandLineRunner {
 		}
 	}
 
+	private void command() {
+		System.out.println("上报lock告警：lock");
+		System.out.println("上报unlock告警：unlock");
+		System.out.println("上报location事件：location");
+		System.out.println("退出：exit");
+	}
 }
