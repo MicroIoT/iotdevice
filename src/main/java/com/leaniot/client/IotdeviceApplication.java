@@ -33,12 +33,12 @@ public class IotdeviceApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		wsession.subscribe(myGet);
 		
-		Map<String, Class<?>> attType = new HashMap<String, Class<?>>();
+		Map<String, Object> attType = new HashMap<String, Object>();
 		attType.put("locked", Boolean.class);
 		mySet.setAttType(attType);
 		wsession.subscribe(mySet);
 		
-		Map<String, Class<?>> actionType = new HashMap<String, Class<?>>();
+		Map<String, Object> actionType = new HashMap<String, Object>();
 		actionType.put("getHistory", Filter.class);
 		myAction.setActionType(actionType);
 		wsession.subscribe(myAction);
