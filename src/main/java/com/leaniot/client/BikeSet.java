@@ -9,6 +9,12 @@ import com.leaniot.exception.ValueException;
 
 @Component
 public class BikeSet extends SetSubscriber {
+	
+	@Override
+	public void init() {
+		addType("locked", Boolean.class);
+	}
+
 	@Override
 	public void setAttribute(String attribute, Object value) {
 		System.out.println(new Date() + ": set attribute: " + attribute);

@@ -12,6 +12,12 @@ import com.leaniot.exception.ValueException;
 
 @Component
 public class BikeAction extends ActionSubscriber {
+	
+	@Override
+	public void init() {
+		addType("getHistory", Filter.class);
+	}
+
 	@Override
 	public Object action(String action, Object request) {
 		System.out.println(new Date() + ":  action: " + action);
