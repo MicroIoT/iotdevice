@@ -28,7 +28,7 @@ public class BikeAction extends ActionSubscriber {
 			for(int i = 0; i < 10; i ++)
 				records.add(getRecord(filter));
 			
-			return new Records(records);
+			return records;
 		}else {
 			throw new ValueException("unknonw action: " + action);
 		}
