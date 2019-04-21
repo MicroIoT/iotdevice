@@ -1,11 +1,11 @@
-package com.leaniot.client;
+package top.microiot.client;
 
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-import com.leaniot.api.device.stomp.SetSubscriber;
-import com.leaniot.exception.ValueException;
+import top.microiot.api.device.stomp.SetSubscriber;
+import top.microiot.exception.ValueException;
 
 @Component
 public class BikeSet extends SetSubscriber {

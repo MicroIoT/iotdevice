@@ -1,4 +1,4 @@
-package com.leaniot.client;
+package top.microiot.client;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,8 +11,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.leaniot.api.device.WebsocketDeviceSession;
-import com.leaniot.domain.attribute.Location;
+import top.microiot.api.device.WebsocketDeviceSession;
+import top.microiot.domain.attribute.Location;
 
 @SpringBootApplication
 public class IotdeviceApplication implements CommandLineRunner {

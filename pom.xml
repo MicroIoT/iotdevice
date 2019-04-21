@@ -9,11 +9,11 @@
 		<version>2.1.4.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.leaniot.device</groupId>
+	<groupId>top.microiot.device</groupId>
 	<artifactId>Bike</artifactId>
 	<version>1.0</version>
 	<name>iotdevice</name>
-	<description>LeanIoT Platform device application demo</description>
+	<description>MicroIoT Platform device application demo</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -21,7 +21,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.ileaniot</groupId>
+			<groupId>top.microiot</groupId>
 			<artifactId>iotapi</artifactId>
 			<version>1.0.0</version>
 		</dependency>
