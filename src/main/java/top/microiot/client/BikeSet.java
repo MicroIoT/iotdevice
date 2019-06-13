@@ -4,11 +4,11 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-import top.microiot.api.device.stomp.SetSubscriber;
+import top.microiot.api.device.stomp.SetRequestSubscriber;
 import top.microiot.exception.ValueException;
 
 @Component
-public class BikeSet extends SetSubscriber {
+public class BikeSet extends SetRequestSubscriber {
 	
 	@Override
 	public void init() {

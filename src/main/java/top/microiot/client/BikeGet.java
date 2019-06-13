@@ -5,12 +5,12 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-import top.microiot.api.device.stomp.GetSubscriber;
+import top.microiot.api.device.stomp.GetRequestSubscriber;
 import top.microiot.domain.attribute.Location;
 import top.microiot.exception.ValueException;
 
 @Component
-public class BikeGet extends GetSubscriber {
+public class BikeGet extends GetRequestSubscriber {
 
 	@Override
 	public Object getAttributeValue(String attribute) {

@@ -7,11 +7,11 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-import top.microiot.api.device.stomp.ActionSubscriber;
+import top.microiot.api.device.stomp.ActionRequestSubscriber;
 import top.microiot.exception.ValueException;
 
 @Component
-public class BikeAction extends ActionSubscriber {
+public class BikeAction extends ActionRequestSubscriber {
 	
 	@Override
 	public void init() {
