@@ -3,18 +3,21 @@ package top.microiot.client;
 import java.util.Date;
 import java.util.Random;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import top.microiot.api.device.stomp.GetRequestSubscriber;
+import top.microiot.domain.Device;
 import top.microiot.domain.attribute.Location;
 import top.microiot.exception.ValueException;
 
 @Component
+@Scope("prototype")
 public class BikeGet extends GetRequestSubscriber {
 
 	@Override
-	public Object getAttributeValue(String attribute) {
-		System.out.println(new Date() + ": get attribute: " + attribute);
+	public Object getAttributeValue(Device device, String attribute) {
+		System.out.println(device.getString() + " " + new Date() + ": get attribute: " + attribute);
 		if(attribute.equals("location")) {
 			Random r = new Random();
 			double x = 180 * r.nextDouble();
