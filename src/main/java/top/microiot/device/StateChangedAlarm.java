@@ -1,4 +1,4 @@
-package top.microiot.client;
+package top.microiot.device;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

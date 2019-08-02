@@ -1,7 +1,8 @@
-package top.microiot.client;
+package top.microiot.device;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,15 +14,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import top.microiot.api.device.WebsocketDeviceSession;
+import top.microiot.domain.Device;
 import top.microiot.domain.attribute.Location;
 
 @SpringBootApplication
 public class IotdeviceApplication implements CommandLineRunner {
 	@Autowired
+	@Qualifier("websocketDeviceSession")
 	private WebsocketDeviceSession wsession;
 	@Autowired
 	@Qualifier("bikeWebsocketDeviceSession")
 	private WebsocketDeviceSession wsession1;
+	@Autowired
+	@Qualifier("bikeGroupWebsocketDeviceSession")
+	private WebsocketDeviceSession wsession2;
 	
 	private WebsocketDeviceSession session;
 	
@@ -37,6 +43,8 @@ public class IotdeviceApplication implements CommandLineRunner {
 	private BikeSet mySet1;
 	@Autowired
 	private BikeAction myAction1;
+	@Autowired
+	private GroupAlarm groupAlarm;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(IotdeviceApplication.class, args);
@@ -53,6 +61,26 @@ public class IotdeviceApplication implements CommandLineRunner {
 		wsession1.subscribe(myGet1);
 		wsession1.subscribe(mySet1);
 		wsession1.subscribe(myAction1);
+		
+		List<Device> devices = wsession2.getSession().getMyChildren();
+		
+		for(Device device : devices) {
+			if(device.getDeviceName().equals("001单车"))
+				wsession2.subscribe(device.getId(), groupAlarm);
+		}
+		
+		devices = wsession1.getSession().getMySibling();
+		for(Device device : devices) {
+			System.out.println("device 1: " + device.getDeviceName());
+		}
+		
+		devices = wsession.getSession().getMySibling();
+		for(Device device : devices) {
+			System.out.println("device 2: " + device.getDeviceName());
+		}
+		
+		Device device = wsession2.getDevice();
+		System.out.println("device group: " + device.getDeviceName());
 		
 		System.out.println("请输入命令：");
 		command();
@@ -73,10 +101,6 @@ public class IotdeviceApplication implements CommandLineRunner {
 					session = wsession;
 					reportUnlock();
 				}
-				else if(line.equals("location 1")) {
-					session = wsession;
-					reportLocation();
-				}
 				else if(line.equals("lock 2")) {
 					session = wsession1;
 					reportLock();
@@ -84,6 +108,10 @@ public class IotdeviceApplication implements CommandLineRunner {
 				else if(line.equals("unlock 2")) {
 					session = wsession1;
 					reportUnlock();
+				}
+				else if(line.equals("location 1")) {
+					session = wsession;
+					reportLocation();
 				}
 				else if(line.equals("location 2")) {
 					session = wsession1;

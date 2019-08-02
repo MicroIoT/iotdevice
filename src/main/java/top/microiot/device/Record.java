@@ -1,4 +1,4 @@
-package top.microiot.client;
+package top.microiot.device;
 
 import java.util.Date;
 
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Filter {
-	private Date startDate;
-	private Date endDate;
+public class Record {
+	private String sessionid;
+	private Date startTime;
+	private Date endTime;
+	
 }

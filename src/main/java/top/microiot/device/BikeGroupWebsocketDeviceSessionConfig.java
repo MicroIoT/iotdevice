@@ -1,4 +1,4 @@
-package top.microiot.client;
+package top.microiot.device;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -10,11 +10,11 @@ import top.microiot.api.device.HttpDeviceSession;
 import top.microiot.api.device.WebsocketDeviceSession;
 
 @Configuration
-public class BikeWebsocketDeviceSessionConfig {
-	@Bean("bikeWebsocketDeviceSession")
+public class BikeGroupWebsocketDeviceSessionConfig {
+	@Bean("bikeGroupWebsocketDeviceSession")
 	@Scope("prototype")
 	public WebsocketDeviceSession websocketDeviceSession(
-			@Qualifier("bikeHttpDeviceSession") HttpDeviceSession httpDeviceSession,
+			@Qualifier("bikeGroupHttpDeviceSession") HttpDeviceSession httpDeviceSession,
 			WebSocketStompClient websocketStompClient) {
 		return new WebsocketDeviceSession(httpDeviceSession, websocketStompClient);
 	}

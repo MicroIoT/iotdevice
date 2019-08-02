@@ -1,4 +1,4 @@
-package top.microiot.client;
+package top.microiot.device;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -9,15 +9,15 @@ import top.microiot.api.HttpSessionProperties;
 import top.microiot.api.device.HttpDeviceSession;
 
 @Configuration
-public class BikeHttpDeviceSessionConfig {
-	@Bean(initMethod = "start", name="bikeHttpDeviceSession")
+public class BikeGroupHttpDeviceSessionConfig {
+	@Bean(initMethod = "start", name="bikeGroupHttpDeviceSession")
     @Scope("prototype")
 	public HttpDeviceSession httpDeviceSession() {
 		return new HttpDeviceSession(httpSessionProperties());
 	}
 	
-	@Bean("bikeHttpProperties")
-    @ConfigurationProperties(prefix = "bike.connect")
+	@Bean("bikeGroupHttpProperties")
+    @ConfigurationProperties(prefix = "bikegroup.connect")
     public HttpSessionProperties httpSessionProperties(){
 	    return new HttpSessionProperties();
     }
