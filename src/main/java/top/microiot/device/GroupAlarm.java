@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import top.microiot.api.client.stomp.AlarmSubscriber;
 import top.microiot.api.device.WebsocketDeviceSession;
 import top.microiot.domain.Device;
-import top.microiot.domain.NotifyObject;
+import top.microiot.domain.ManagedObject;
 
 @Component
 public class GroupAlarm extends AlarmSubscriber {
@@ -24,7 +24,7 @@ public class GroupAlarm extends AlarmSubscriber {
 	}
 
 	@Override
-	public void onAlarm(NotifyObject notifyObject, String alarmType, Object alarmInfo, Date reportTime, Date receiveTime) {
+	public void onAlarm(ManagedObject notifyObject, String alarmType, Object alarmInfo, Date reportTime, Date receiveTime) {
 		if (alarmType.equals("StateChangedAlarm")) {
 			StateChangedAlarm info = (StateChangedAlarm) alarmInfo;
 
@@ -34,7 +34,7 @@ public class GroupAlarm extends AlarmSubscriber {
 			List<Device> devices = s.getSession().getMyChildren();
 			
 			for(Device device : devices) {
-				if(device.getDeviceName().equals("002单车"))
+				if(device.getName().equals("002单车"))
 					s.getAsync(device.getId(), "location", Location.class, myGet);
 			}
 			

@@ -36,7 +36,7 @@ public class MyGet extends GetResponseSubscriber {
 			List<Device> devices = s.getSession().getMyChildren();
 			
 			for(Device d : devices) {
-				if(d.getDeviceName().equals("002单车"))
+				if(d.getName().equals("002单车"))
 				s.setAsync(d.getId(), "locked", locked, mySet);
 			}
 			

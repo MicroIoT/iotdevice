@@ -65,22 +65,22 @@ public class IotdeviceApplication implements CommandLineRunner {
 		List<Device> devices = wsession2.getSession().getMyChildren();
 		
 		for(Device device : devices) {
-			if(device.getDeviceName().equals("001单车"))
+			if(device.getName().equals("001单车"))
 				wsession2.subscribe(device.getId(), groupAlarm);
 		}
 		
 		devices = wsession1.getSession().getMySibling();
 		for(Device device : devices) {
-			System.out.println("device 1: " + device.getDeviceName());
+			System.out.println("device 1: " + device.getName());
 		}
 		
 		devices = wsession.getSession().getMySibling();
 		for(Device device : devices) {
-			System.out.println("device 2: " + device.getDeviceName());
+			System.out.println("device 2: " + device.getName());
 		}
 		
 		Device device = wsession2.getDevice();
-		System.out.println("device group: " + device.getDeviceName());
+		System.out.println("device group: " + device.getName());
 		
 		System.out.println("请输入命令：");
 		command();
