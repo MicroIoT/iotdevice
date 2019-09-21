@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import top.microiot.api.client.stomp.AlarmSubscriber;
 import top.microiot.api.device.WebsocketDeviceSession;
 import top.microiot.domain.Device;
+import top.microiot.domain.DeviceGroup;
 import top.microiot.domain.ManagedObject;
 
 @Component
@@ -31,11 +32,16 @@ public class GroupAlarm extends AlarmSubscriber {
 			System.out.println("bike group received StateChangedAlarm: sessionid is " + info.getSessionid() + " locked: " + info.isLocked() + " from child device " + notifyObject.getString() );
 			myGet.setLocked(info.isLocked());
 			WebsocketDeviceSession s = (WebsocketDeviceSession) this.getWebsocketClientSession();
-			List<Device> devices = s.getSession().getMyChildren();
+			List<DeviceGroup> groups = s.getSession().getMyDeviceGroup();
 			
-			for(Device device : devices) {
-				if(device.getName().equals("002单车"))
-					s.getAsync(device.getId(), "location", Location.class, myGet);
+			for(DeviceGroup group : groups) {
+				if(group.getName().equals("设备组1")) {
+					for(Device device : group.getDevices()) {
+						if(device.getName().equals("002单车"))
+							s.getAsync(device.getId(), "location", Location.class, myGet);
+					}
+				}
+					
 			}
 			
 		} else

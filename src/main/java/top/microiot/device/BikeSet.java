@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import top.microiot.api.device.stomp.SetRequestSubscriber;
 import top.microiot.domain.Device;
+import top.microiot.domain.User;
 import top.microiot.exception.ValueException;
 
 @Component
@@ -19,8 +20,14 @@ public class BikeSet extends SetRequestSubscriber {
 	}
 
 	@Override
-	public void setAttribute(Device device, String attribute, Object value) {
-		System.out.println(device.getString() + " " + new Date() + ": set attribute: " + attribute);
+	public void setAttribute(User requester, Device device, String attribute, Object value) {
+		String user = null;
+		if(requester.isDevice())
+			user = "device";
+		else
+			user = requester.getUsername();
+		
+		System.out.println(device.getString() + " " + new Date() + ": set attribute: " + attribute + " from: " + user);
 		if(attribute.equals("locked")) {
 			Boolean s = (Boolean)value;
 			System.out.println(new Date() + ": locked: " + s);

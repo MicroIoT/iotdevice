@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import top.microiot.api.device.stomp.ActionRequestSubscriber;
 import top.microiot.domain.Device;
+import top.microiot.domain.User;
 import top.microiot.exception.ValueException;
 
 @Component
@@ -22,8 +23,13 @@ public class BikeAction extends ActionRequestSubscriber {
 	}
 
 	@Override
-	public Object action(Device device, String action, Object request) {
-		System.out.println(device.getString() + " " + new Date() + ":  action: " + action);
+	public Object action(User requester, Device device, String action, Object request) {
+		String user = null;
+		if(requester.isDevice())
+			user = "device";
+		else
+			user = requester.getUsername();
+		System.out.println(device.getString() + " " + new Date() + ":  action: " + action + " from: " + user);
 		if(action.equals("getHistory")) {
 			Filter filter = (Filter)request;
 			

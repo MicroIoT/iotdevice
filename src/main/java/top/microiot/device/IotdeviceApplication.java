@@ -13,8 +13,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import top.microiot.api.device.IoTDevice;
 import top.microiot.api.device.WebsocketDeviceSession;
 import top.microiot.domain.Device;
+import top.microiot.domain.DeviceGroup;
 import top.microiot.domain.attribute.Location;
 
 @SpringBootApplication
@@ -29,20 +31,13 @@ public class IotdeviceApplication implements CommandLineRunner {
 	@Qualifier("bikeGroupWebsocketDeviceSession")
 	private WebsocketDeviceSession wsession2;
 	
-	private WebsocketDeviceSession session;
-	
 	@Autowired
 	private BikeGet myGet;
 	@Autowired
 	private BikeSet mySet;
 	@Autowired
 	private BikeAction myAction;
-	@Autowired
-	private BikeGet myGet1;
-	@Autowired
-	private BikeSet mySet1;
-	@Autowired
-	private BikeAction myAction1;
+	
 	@Autowired
 	private GroupAlarm groupAlarm;
 	
@@ -52,34 +47,22 @@ public class IotdeviceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		session = wsession;
+		IoTDevice bike = new IoTDevice(wsession, myGet, mySet, myAction);
+		IoTDevice bike1 = new IoTDevice(wsession1, myGet, mySet, myAction);
+		IoTDevice group = new IoTDevice(wsession2, null, null, null);
 		
-		wsession.subscribe(myGet);
-		wsession.subscribe(mySet);
-		wsession.subscribe(myAction);
-		
-		wsession1.subscribe(myGet1);
-		wsession1.subscribe(mySet1);
-		wsession1.subscribe(myAction1);
-		
-		List<Device> devices = wsession2.getSession().getMyChildren();
-		
-		for(Device device : devices) {
-			if(device.getName().equals("001单车"))
-				wsession2.subscribe(device.getId(), groupAlarm);
+		List<DeviceGroup> groups = group.getDeviceGroup();
+		for(DeviceGroup g : groups) {
+			if(g.getName().equals("设备组1")) {
+				for(Device device : g.getDevices()) {
+					if(device.getName().equals("001单车"))
+						group.subscribeAlarm(device.getId(), groupAlarm);
+					System.out.println("设备组1：" + device.getString());
+				}
+			}
 		}
 		
-		devices = wsession1.getSession().getMySibling();
-		for(Device device : devices) {
-			System.out.println("device 1: " + device.getName());
-		}
-		
-		devices = wsession.getSession().getMySibling();
-		for(Device device : devices) {
-			System.out.println("device 2: " + device.getName());
-		}
-		
-		Device device = wsession2.getDevice();
+		Device device = group.getDevice();
 		System.out.println("device group: " + device.getName());
 		
 		System.out.println("请输入命令：");
@@ -90,32 +73,28 @@ public class IotdeviceApplication implements CommandLineRunner {
 			try {
 				String line = scanner.nextLine();
 				if(line.equals("exit")) {
-					session.stop();
+					bike.stop();
+					bike1.stop();
+					group.stop();
 					System.exit(0);
 				}
 				else if(line.equals("lock 1")) {
-					session = wsession;
-					reportLock();
+					reportAlarm(bike, true);
 				}
 				else if(line.equals("unlock 1")) {
-					session = wsession;
-					reportUnlock();
+					reportAlarm(bike, false);
 				}
 				else if(line.equals("lock 2")) {
-					session = wsession1;
-					reportLock();
+					reportAlarm(bike1, true);
 				}
 				else if(line.equals("unlock 2")) {
-					session = wsession1;
-					reportUnlock();
+					reportAlarm(bike1, false);
 				}
 				else if(line.equals("location 1")) {
-					session = wsession;
-					reportLocation();
+					reportLocation(bike);
 				}
 				else if(line.equals("location 2")) {
-					session = wsession1;
-					reportLocation();
+					reportLocation(bike1);
 				}
 				else {
 					command();
@@ -127,23 +106,18 @@ public class IotdeviceApplication implements CommandLineRunner {
 		}
 	}
 
-	private void reportLocation() {
+	private void reportAlarm(IoTDevice bike, boolean lock) {
+		StateChangedAlarm alarm = new StateChangedAlarm(Long.toString(new Date().getTime()), lock);
+		bike.reportAlarm("StateChangedAlarm", alarm);
+	}
+
+	private void reportLocation(IoTDevice bike) {
 		Map<String, Object> events = new HashMap<String, Object>();
 		Random r = new Random();
 		double x = 180 * r.nextDouble();
 		double y = 90 * r.nextDouble();
 		events.put("location", new Location(x, y));
-		session.getSession().reportEvents(events);
-	}
-
-	private void reportUnlock() {
-		StateChangedAlarm unlock = new StateChangedAlarm(Long.toString(new Date().getTime()), false);
-		session.getSession().reportAlarm("StateChangedAlarm", unlock);
-	}
-
-	private void reportLock() {
-		StateChangedAlarm lock = new StateChangedAlarm(Long.toString(new Date().getTime()), true);
-		session.getSession().reportAlarm("StateChangedAlarm", lock);
+		bike.reportEvent(events);
 	}
 
 	private void command() {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import top.microiot.api.client.stomp.GetResponseSubscriber;
 import top.microiot.api.device.WebsocketDeviceSession;
 import top.microiot.domain.Device;
+import top.microiot.domain.DeviceGroup;
 import top.microiot.domain.attribute.Location;
 
 @Component
@@ -33,13 +34,18 @@ public class MyGet extends GetResponseSubscriber {
 			System.out.println(location.getLongitude() + ":" + location.getLatitude());
 
 			WebsocketDeviceSession s = (WebsocketDeviceSession) this.getWebsocketClientSession();
-			List<Device> devices = s.getSession().getMyChildren();
 			
-			for(Device d : devices) {
-				if(d.getName().equals("002单车"))
-				s.setAsync(d.getId(), "locked", locked, mySet);
+			List<DeviceGroup> groups = s.getSession().getMyDeviceGroup();
+			
+			for(DeviceGroup group : groups) {
+				if(group.getName().equals("设备组1")) {
+					for(Device d : group.getDevices()) {
+						if(d.getName().equals("002单车"))
+							s.setAsync(d.getId(), "locked", locked, mySet);
+					}
+				}
+					
 			}
-			
 		}
 		else if(attribute.equals("locked")) {
 			boolean locked = (boolean)value;
