@@ -1,6 +1,5 @@
 package top.microiot.device;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 import top.microiot.api.device.IoTDevice;
 import top.microiot.api.device.WebsocketDeviceSession;
@@ -20,6 +21,7 @@ import top.microiot.domain.DeviceGroup;
 import top.microiot.domain.attribute.Location;
 
 @SpringBootApplication
+@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
 public class IotdeviceApplication implements CommandLineRunner {
 	@Autowired
 	@Qualifier("websocketDeviceSession")
@@ -53,11 +55,11 @@ public class IotdeviceApplication implements CommandLineRunner {
 		
 		List<DeviceGroup> groups = group.getDeviceGroup();
 		for(DeviceGroup g : groups) {
-			if(g.getName().equals("设备组1")) {
+			if(g.getName().equals("设备组")) {
 				for(Device device : g.getDevices()) {
-					if(device.getName().equals("001单车"))
+					if(device.getName().equals("001"))
 						group.subscribeAlarm(device.getId(), groupAlarm);
-					System.out.println("设备组1：" + device.getString());
+					System.out.println("设备组：" + device.getString());
 				}
 			}
 		}
@@ -107,7 +109,11 @@ public class IotdeviceApplication implements CommandLineRunner {
 	}
 
 	private void reportAlarm(IoTDevice bike, boolean lock) {
-		StateChangedAlarm alarm = new StateChangedAlarm(Long.toString(new Date().getTime()), lock);
+		Random r = new Random();
+		double x = 180 * r.nextDouble();
+		double y = 90 * r.nextDouble();
+		Location location = new Location(x, y);
+		StateChangedAlarm alarm = new StateChangedAlarm(location, lock);
 		bike.reportAlarm("StateChangedAlarm", alarm);
 	}
 

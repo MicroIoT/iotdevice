@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import top.microiot.api.device.stomp.ActionRequestSubscriber;
 import top.microiot.domain.Device;
 import top.microiot.domain.User;
+import top.microiot.domain.attribute.Location;
 import top.microiot.exception.ValueException;
 
 @Component
@@ -60,7 +61,11 @@ public class BikeAction extends ActionRequestSubscriber {
 			end = filter.getEndDate();
 		end.setTime(end.getTime()-(i * 1000000));
 		
-		return new Record(Long.toString(start.getTime()), start, end);
+		Random l = new Random();
+		double x = 180 * l.nextDouble();
+		double y = 90 * l.nextDouble();
+		Location location = new Location(x, y);
+		return new Record(location, start, location, end);
 	}
 
 }

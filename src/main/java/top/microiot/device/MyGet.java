@@ -38,9 +38,9 @@ public class MyGet extends GetResponseSubscriber {
 			List<DeviceGroup> groups = s.getSession().getMyDeviceGroup();
 			
 			for(DeviceGroup group : groups) {
-				if(group.getName().equals("设备组1")) {
+				if(group.getName().equals("设备组")) {
 					for(Device d : group.getDevices()) {
-						if(d.getName().equals("002单车"))
+						if(d.getName().equals("002"))
 							s.setAsync(d.getId(), "locked", locked, mySet);
 					}
 				}

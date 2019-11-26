@@ -29,15 +29,15 @@ public class GroupAlarm extends AlarmSubscriber {
 		if (alarmType.equals("StateChangedAlarm")) {
 			StateChangedAlarm info = (StateChangedAlarm) alarmInfo;
 
-			System.out.println("bike group received StateChangedAlarm: sessionid is " + info.getSessionid() + " locked: " + info.isLocked() + " from child device " + notifyObject.getString() );
+			System.out.println("bike group received StateChangedAlarm:  locked: " + info.isLocked() + " from child device " + notifyObject.getString() );
 			myGet.setLocked(info.isLocked());
 			WebsocketDeviceSession s = (WebsocketDeviceSession) this.getWebsocketClientSession();
 			List<DeviceGroup> groups = s.getSession().getMyDeviceGroup();
 			
 			for(DeviceGroup group : groups) {
-				if(group.getName().equals("设备组1")) {
+				if(group.getName().equals("设备组")) {
 					for(Device device : group.getDevices()) {
-						if(device.getName().equals("002单车"))
+						if(device.getName().equals("002"))
 							s.getAsync(device.getId(), "location", Location.class, myGet);
 					}
 				}
