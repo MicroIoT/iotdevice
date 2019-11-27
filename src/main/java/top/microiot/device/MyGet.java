@@ -2,19 +2,13 @@ package top.microiot.device;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import top.microiot.api.client.stomp.GetResponseSubscriber;
 import top.microiot.api.device.WebsocketDeviceSession;
 import top.microiot.domain.Device;
 import top.microiot.domain.DeviceGroup;
 import top.microiot.domain.attribute.Location;
 
-@Component
 public class MyGet extends GetResponseSubscriber {
-	@Autowired
-	private MySet mySet;
 	private boolean locked;
 	
 	public void setLocked(boolean locked) {
@@ -41,7 +35,7 @@ public class MyGet extends GetResponseSubscriber {
 				if(group.getName().equals("设备组")) {
 					for(Device d : group.getDevices()) {
 						if(d.getName().equals("002"))
-							s.setAsync(d.getId(), "locked", locked, mySet);
+							s.setAsync(d.getId(), "locked", locked, new MySet());
 					}
 				}
 					

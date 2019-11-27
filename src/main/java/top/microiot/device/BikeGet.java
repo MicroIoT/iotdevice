@@ -3,17 +3,12 @@ package top.microiot.device;
 import java.util.Date;
 import java.util.Random;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import top.microiot.api.device.stomp.GetRequestSubscriber;
 import top.microiot.domain.Device;
 import top.microiot.domain.User;
 import top.microiot.domain.attribute.Location;
 import top.microiot.exception.ValueException;
 
-@Component
-@Scope("prototype")
 public class BikeGet extends GetRequestSubscriber {
 
 	@Override

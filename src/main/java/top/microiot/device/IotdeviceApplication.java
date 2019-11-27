@@ -33,24 +33,14 @@ public class IotdeviceApplication implements CommandLineRunner {
 	@Qualifier("bikeGroupWebsocketDeviceSession")
 	private WebsocketDeviceSession wsession2;
 	
-	@Autowired
-	private BikeGet myGet;
-	@Autowired
-	private BikeSet mySet;
-	@Autowired
-	private BikeAction myAction;
-	
-	@Autowired
-	private GroupAlarm groupAlarm;
-	
 	public static void main(String[] args) {
 		SpringApplication.run(IotdeviceApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		IoTDevice bike = new IoTDevice(wsession, myGet, mySet, myAction);
-		IoTDevice bike1 = new IoTDevice(wsession1, myGet, mySet, myAction);
+		IoTDevice bike = new IoTDevice(wsession, new BikeGet(), new BikeSet(), new BikeAction());
+		IoTDevice bike1 = new IoTDevice(wsession1, new BikeGet(), new BikeSet(), new BikeAction());
 		IoTDevice group = new IoTDevice(wsession2, null, null, null);
 		
 		List<DeviceGroup> groups = group.getDeviceGroup();
@@ -58,7 +48,7 @@ public class IotdeviceApplication implements CommandLineRunner {
 			if(g.getName().equals("设备组")) {
 				for(Device device : g.getDevices()) {
 					if(device.getName().equals("001"))
-						group.subscribeAlarm(device.getId(), groupAlarm);
+						group.subscribeAlarm(device.getId(), new GroupAlarm());
 					System.out.println("设备组：" + device.getString());
 				}
 			}
