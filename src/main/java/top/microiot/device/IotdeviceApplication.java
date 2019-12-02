@@ -20,8 +20,7 @@ import top.microiot.domain.Device;
 import top.microiot.domain.DeviceGroup;
 import top.microiot.domain.attribute.Location;
 
-@SpringBootApplication
-@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
+@SpringBootApplication(exclude={MongoAutoConfiguration.class})
 public class IotdeviceApplication implements CommandLineRunner {
 	@Autowired
 	@Qualifier("websocketDeviceSession")
