@@ -5,12 +5,15 @@ import java.util.List;
 
 import javax.tools.DocumentationTool.Location;
 
+import org.springframework.stereotype.Component;
+
 import top.microiot.api.client.stomp.AlarmSubscriber;
 import top.microiot.api.device.WebsocketDeviceSession;
 import top.microiot.domain.Device;
 import top.microiot.domain.DeviceGroup;
 import top.microiot.domain.ManagedObject;
 
+@Component
 public class GroupAlarm extends AlarmSubscriber {
 	@Override
 	public void init() {

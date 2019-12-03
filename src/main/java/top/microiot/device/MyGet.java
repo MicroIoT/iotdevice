@@ -2,12 +2,15 @@ package top.microiot.device;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import top.microiot.api.client.stomp.GetResponseSubscriber;
 import top.microiot.api.device.WebsocketDeviceSession;
 import top.microiot.domain.Device;
 import top.microiot.domain.DeviceGroup;
 import top.microiot.domain.attribute.Location;
 
+@Component
 public class MyGet extends GetResponseSubscriber {
 	private boolean locked;
 	
