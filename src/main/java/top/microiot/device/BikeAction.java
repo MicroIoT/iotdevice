@@ -46,21 +46,14 @@ public class BikeAction extends ActionRequestSubscriber {
 
 	private Record getRecord(Filter filter) {
 		Random r = new Random();
-		int i = r.nextInt(10);
-		Date start;
-		if(filter.getStartDate() == null)
-			start = new Date();
-		else
-			start = filter.getStartDate();
-		start.setTime(start.getTime()-(i * 1000000));
-		
-		Date end;
-		if(filter.getEndDate() == null)
-			end = new Date();
-		else
-			end = filter.getEndDate();
-		end.setTime(end.getTime()-(i * 1000000));
-		
+		int i = r.nextInt(10000000);
+		Date start = new Date();
+		start.setTime(start.getTime() + i);
+
+		int j = r.nextInt(10000000);
+		Date end = new Date();
+		end.setTime(end.getTime() + j);
+
 		Random l = new Random();
 		double x = 180 * l.nextDouble();
 		double y = 90 * l.nextDouble();
