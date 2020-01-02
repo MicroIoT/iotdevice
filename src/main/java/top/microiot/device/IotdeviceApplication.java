@@ -53,6 +53,9 @@ public class IotdeviceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		myGet.setDurable(true);
+		mySet.setDurable(true);
+		myAction.setDurable(true);
 		IoTDevice bike = new IoTDevice(wsession, myGet, mySet, myAction);
 		IoTDevice bike1 = new IoTDevice(wsession1, myGet1, mySet1, myAction1);
 		IoTDevice group = new IoTDevice(wsession2, null, null, null);
